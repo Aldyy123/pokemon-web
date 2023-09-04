@@ -2,6 +2,7 @@ import { IPokemonEntity } from "../entities/pokemon.entity";
 
 export default interface ILocalStorageUseCase {
     key: string
+    data: IPokemonEntity[] | null
     get(): any;
     set(value: IPokemonEntity): void
     remove(value: IPokemonEntity): void
