@@ -1,37 +1,76 @@
-import { IPokemon } from "@/domain/entities/pokemon.entity";
+import { IPokemonEntity } from "@/domain/entities/pokemon.entity";
 import { ILocalStorage } from "@/domain/interfaces";
 
 class LocalStorageDB implements ILocalStorage.default {
-    _parseJson(data: string): object {
-        return JSON.parse(data);
+    key: string;
+    data: IPokemonEntity[] | null;
+
+    constructor(key: string) {
+        this.key = key;
+        this.data = this.get();
+    }
+    _parseJson(data: string): IPokemonEntity[] | null {
+        const dataArray = JSON.parse(data);
+        if (Array.isArray(dataArray)) return dataArray;
+        return null
     }
 
-    _stringifyJson(data: object): string {
-        return JSON.stringify(data);
+    _stringifyJson(data: IPokemonEntity): string {
+        if (this.data === null) {
+            this.data = []
+        }
+
+        this.data = [...this.data, data]
+        return JSON.stringify(this.data);
     }
 
-    get(key: string): object | null {
+    get(): IPokemonEntity[] | null {
         try {
-            const data = localStorage.getItem(key);
-            if(!data) return null;
+            const data: string | null = localStorage.getItem(this.key);
+            if (!data) return null;
             return this._parseJson(data);
         } catch (error) {
             throw new Error("Method not implemented.");
         }
     }
 
-    set(key: string, value: IPokemon): void {
+    set(value: IPokemonEntity): void {
         try {
             const data = this._stringifyJson(value);
-            localStorage.setItem(key, data);
+            localStorage.setItem(this.key, data);
+
         } catch (error) {
             throw new Error("Method not implemented.");
         }
     }
 
-    remove(key: string): void {
+    remove(value: IPokemonEntity): void {
         try {
-            localStorage.removeItem(key);
+            const data: IPokemonEntity[] | null = this.get();
+            if (!data) return;
+
+            const pokemonIndex = data.findIndex((item: IPokemonEntity) => {
+                return item.id === value.id
+            });
+            data.splice(pokemonIndex, 1);
+            
+            const stringifyData = JSON.stringify(data);            
+            localStorage.setItem(this.key, stringifyData);
+            
+        } catch (error) {
+            throw new Error("Method not implemented.");
+        }
+    }
+
+    checkStorageValue(value: IPokemonEntity): boolean {
+        try {
+            const data: IPokemonEntity[] | null = this.get();
+            if (!data) return false;
+
+            const isExist = data.some((item: IPokemonEntity) => {
+                return item.id === value.id
+            });
+            return isExist
         } catch (error) {
             throw new Error("Method not implemented.");
         }

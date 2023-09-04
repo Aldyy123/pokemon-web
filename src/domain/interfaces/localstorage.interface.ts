@@ -1,7 +1,11 @@
+import { IPokemonEntity } from "../entities/pokemon.entity";
+
 export default interface ILocalStorageUseCase {
-    get(key: string): any;
-    set(key: string, value: any): void
-    remove(key: string): void
-    _parseJson(data: any): object;
-    _stringifyJson(data: object): string;
+    key: string
+    get(): any;
+    set(value: IPokemonEntity): void
+    remove(value: IPokemonEntity): void
+    checkStorageValue(value: IPokemonEntity): boolean
+    _parseJson(data: string): IPokemonEntity[] | null;
+    _stringifyJson(data: IPokemonEntity): string;
 }

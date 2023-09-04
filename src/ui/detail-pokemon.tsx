@@ -1,4 +1,8 @@
+import { urlBase } from "@/config/api.config";
+import { IPokemonEntity } from "@/domain/entities/pokemon.entity";
+import LocalStorageDB from "@/infra/usecases/localstorage.usecase";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface DetailPokemonProps {
     pokemon: any
@@ -6,11 +10,35 @@ interface DetailPokemonProps {
 
 export default function DetailPokemon({
     pokemon
-}: DetailPokemonProps){
-    console.log(pokemon);
-    return(
+}: DetailPokemonProps) {
+    const localStorageDb = new LocalStorageDB('pokemon')
+    const dataPokemon: IPokemonEntity = {
+        id: pokemon.id,
+        name: pokemon.name,
+        pokemon_url: `${urlBase}pokemon/${pokemon.id}`,
+    }
+    const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)
+
+    useEffect(() => {
+        const existData = localStorageDb.checkStorageValue(dataPokemon)
+        setAlreadyDataToLocal(existData)
+    }, [])
+
+    const handleADataToLocal = () => {
+        if(alreadyDataToLocal) {
+            localStorageDb.remove(dataPokemon)
+            setAlreadyDataToLocal(false)
+            return
+        }
+
+        localStorageDb.set(dataPokemon)
+        setAlreadyDataToLocal(true)
+    }
+
+
+    return (
         <>
-        <div className="bg-gray-300 dark:bg-gray-700 rounded-lg shadow-md p-4 max-w-2xl mt-10 mx-auto">
+            <div className="bg-gray-300 dark:bg-gray-700 rounded-lg shadow-md p-4 max-w-2xl mt-10 mx-auto">
                 <div className="text-center">
                     <Image
                         height={800}
@@ -49,8 +77,11 @@ export default function DetailPokemon({
                     </ul>
                 </div>
                 <div className="mt-4">
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-                        Add to Favorites
+                    <button
+                        onClick={() => handleADataToLocal()}
+                        className={alreadyDataToLocal ? 'btn-default-danger' : 'btn-default'}
+                    >
+                        {alreadyDataToLocal ? 'Delete to Favourite' : 'Add to favourite'}
                     </button>
                 </div>
             </div>
