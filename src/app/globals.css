@@ -12,7 +12,7 @@
   }
 
   .btn-default {
-    @apply px-4 py-2 rounded-md bg-blue-500 text-white ;
+    @apply bg-blue-500 text-white px-6 py-2 rounded-lg transition duration-300 hover:bg-blue-600 hover:shadow-md
   }
 }
 

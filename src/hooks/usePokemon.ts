@@ -7,7 +7,7 @@ const PokemonClient = new PokemonAPi()
 export const useFetchPokemonWithInfinityScroll = () => {
     return useInfiniteQuery(
         ['pokemonList'],
-        ({ pageParam = 0 }) => PokemonClient.getPokemonList(pageParam),
+        ({ pageParam }) => PokemonClient.getPokemonList({ pageParam }),
         {
             getNextPageParam: (lastPage) => {
                 if (lastPage.next) {

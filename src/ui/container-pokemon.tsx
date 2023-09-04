@@ -12,6 +12,8 @@ export default function ContainerPokemon() {
 
     if (isLoading) return <Loading />
     if (isError) return <p>Error: {error?.message}</p>
+    console.log(data);
+    
 
     return (
         <>
@@ -22,7 +24,7 @@ export default function ContainerPokemon() {
                 if (lengthData > pages.count) {
                     setHasMore(false)
                 }
-
+                
 
                 return (
                     <InfiniteScroll
@@ -33,6 +35,7 @@ export default function ContainerPokemon() {
                         loader={<h4>Loading...</h4>}
                     >
                         <ListPokemon
+                            offsetNumber={offsetNumber}
                             results={pages.results} />
                     </InfiniteScroll>
 
