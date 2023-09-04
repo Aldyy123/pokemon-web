@@ -5,12 +5,14 @@ interface Props {
     name: string;
     id: number;
     image: string;
+    types: any[];
 }
 
 export default function Card({
     name,
     id,
-    image
+    image,
+    types
 }: Props) {
 
 
@@ -29,6 +31,11 @@ export default function Card({
                     {name}
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400">ID: {id}</p>
+                <div className="flex gap-5 mt-3">
+                    {types?.map((type: any, index: number) => (
+                        <p key={index} className="py-1 px-3 bg-violet-500 rounded text-gray-100">{type.type.name}</p>
+                    ))}
+                </div>
             </Link>
         </>
     )

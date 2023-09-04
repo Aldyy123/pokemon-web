@@ -19,6 +19,15 @@ class PokemonAPi implements IPokemon.default {
             throw new Error('Something went wrong');
         }
     }
+
+    async getPokemonTypesList(): Promise<any> {
+        try {
+            const api = await baseAxios.get(`type`);
+            return api.data;
+        } catch (error) {
+            throw new Error('Something went wrong');
+        }
+    }
 }
 
 export default PokemonAPi;

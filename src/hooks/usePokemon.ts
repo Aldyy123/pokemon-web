@@ -16,6 +16,7 @@ export const useFetchPokemonWithInfinityScroll = () => {
                 }
                 return undefined;
             },
+            cacheTime: Infinity,
         }
     );
 };
@@ -27,3 +28,10 @@ export const usePokemonDetail = (query: string) => {
         retry: false,
     });
 };
+
+export const usePokemonTypesList = () => {
+    return useQuery(['pokemonTypesList'], () => PokemonClient.getPokemonTypesList(), {
+        staleTime: Infinity,
+        retry: false,
+    });
+}
