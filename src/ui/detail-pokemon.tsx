@@ -18,7 +18,8 @@ export default function DetailPokemon({
             id: pokemon.id,
             name: pokemon.name,
             pokemon_url: `${urlBase}pokemon/${pokemon.id}`,
-            image: pokemon.sprites.other['official-artwork'].front_default
+            image: pokemon.sprites.other['official-artwork'].front_default,
+            types: pokemon.types
         }
         ), [pokemon])
         const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)

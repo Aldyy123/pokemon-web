@@ -10,6 +10,7 @@ export default function ListPokemonFavourite({
                 {results.map((pokemon: any, index: number) => (
                     <Card
                         key={index}
+                        types={pokemon.types}
                         id={pokemon.id}
                         image={pokemon.image}
                         name={pokemon.name}

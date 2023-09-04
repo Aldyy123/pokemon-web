@@ -3,4 +3,5 @@ export interface IPokemonEntity {
     pokemon_url: string;
     id: number;
     image: string
+    types: any[];
 }
