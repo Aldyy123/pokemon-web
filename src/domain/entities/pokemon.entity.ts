@@ -1,6 +1,5 @@
 export interface IPokemon {
     name: string;
-    id_pokemon: string;
+    pokemon_url: string;
     id: number;
-    image: string;
 }

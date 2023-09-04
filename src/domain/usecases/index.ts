@@ -1,1 +1,0 @@
-export * as IPokemon from './pokemon.interface';

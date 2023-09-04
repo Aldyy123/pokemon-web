@@ -1,9 +1,9 @@
 "use client"
 
-import Navbar from '@/infra/ui/components/Navbar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import ReactQueryProvider from '@/layouts/ReactQueryProvider'
+import Navbar from '@/ui/components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 

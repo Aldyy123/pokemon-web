@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const urlBase = `https://pokeapi.co/api/v2/`
+export const urlBase = `https://pokeapi.co/api/v2/`
 
 const instance = axios.create({
     baseURL: urlBase,
