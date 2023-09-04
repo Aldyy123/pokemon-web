@@ -1,8 +1,9 @@
 import { urlBase } from "@/config/api.config";
 import { IPokemonEntity } from "@/domain/entities/pokemon.entity";
+import { ILocalStorage } from "@/domain/interfaces";
 import LocalStorageDB from "@/infra/usecases/localstorage.usecase";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface DetailPokemonProps {
     pokemon: any
@@ -11,28 +12,35 @@ interface DetailPokemonProps {
 export default function DetailPokemon({
     pokemon
 }: DetailPokemonProps) {
-    const localStorageDb = new LocalStorageDB('pokemon')
-    const dataPokemon: IPokemonEntity = {
-        id: pokemon.id,
-        name: pokemon.name,
-        pokemon_url: `${urlBase}pokemon/${pokemon.id}`,
-        image: pokemon.sprites.front_default
-    }
-    const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)
-
-    useEffect(() => {
+    const [localStorageInjectDb, setLocalStorageInjectDb] = useState<ILocalStorage.default | null>(null)
+    const dataPokemon: IPokemonEntity = useMemo(() => (
+        {
+            id: pokemon.id,
+            name: pokemon.name,
+            pokemon_url: `${urlBase}pokemon/${pokemon.id}`,
+            image: pokemon.sprites.front_default
+        }
+        ), [pokemon])
+        const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)
+        
+        useEffect(() => {
+        const localStorageDb = new LocalStorageDB('pokemon')
+        setLocalStorageInjectDb(localStorageDb)
         const existData = localStorageDb.checkStorageValue(dataPokemon)
         setAlreadyDataToLocal(existData)
-    }, [])
+
+    }, [dataPokemon])
 
     const handleADataToLocal = () => {
+        if(!localStorageInjectDb) return
+
         if(alreadyDataToLocal) {
-            localStorageDb.remove(dataPokemon)
+            localStorageInjectDb.remove(dataPokemon)
             setAlreadyDataToLocal(false)
             return
         }
 
-        localStorageDb.set(dataPokemon)
+        localStorageInjectDb.set(dataPokemon)
         setAlreadyDataToLocal(true)
     }
 

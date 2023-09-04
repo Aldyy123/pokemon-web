@@ -7,7 +7,7 @@ class PokemonAPi implements IPokemon.default {
             const api = await baseAxios.get(`pokemon?limit=20&offset=${pageParam}`);
             return api.data;
         } catch (error) {
-            throw new Error("Method not implemented.");
+            throw new Error('Something went wrong');
         }
     }
 
@@ -16,7 +16,7 @@ class PokemonAPi implements IPokemon.default {
             const api = await baseAxios.get(`pokemon/${name}`);
             return api.data;
         } catch (error) {
-            throw new Error("Method not implemented.");
+            throw new Error('Something went wrong');
         }
     }
 }

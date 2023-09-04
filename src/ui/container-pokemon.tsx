@@ -4,15 +4,15 @@ import PokemonAPi from "@/infra/usecases/pokemon.usecase";
 import Loading from "./components/Loading";
 import ListPokemon from "./list-pokemon.ui";
 import { useFetchPokemonWithInfinityScroll } from "@/hooks/usePokemon";
+import Error from "next/error";
 
 export default function ContainerPokemon() {
     const PokemonClient = new PokemonAPi()
     const [hasMore, setHasMore] = useState(true)
-    const { data, error, isLoading, fetchNextPage, isError } = useFetchPokemonWithInfinityScroll()
+    const { data, isLoading, fetchNextPage, isError } = useFetchPokemonWithInfinityScroll()
 
     if (isLoading) return <Loading />
-    if (isError) return <p>Error: {error?.message}</p>
-    console.log(data);
+    if (isError) return <Error statusCode={400} />
     
 
     return (

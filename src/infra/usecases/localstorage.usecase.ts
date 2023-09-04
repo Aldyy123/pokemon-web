@@ -30,7 +30,7 @@ class LocalStorageDB implements ILocalStorage.default {
             if (!data) return null;
             return this._parseJson(data);
         } catch (error) {
-            throw new Error("Method not implemented.");
+            throw new Error("Something went wrong");
         }
     }
 
@@ -40,7 +40,7 @@ class LocalStorageDB implements ILocalStorage.default {
             localStorage.setItem(this.key, data);
 
         } catch (error) {
-            throw new Error("Method not implemented.");
+            throw new Error("Something went wrong");
         }
     }
 
@@ -58,7 +58,7 @@ class LocalStorageDB implements ILocalStorage.default {
             localStorage.setItem(this.key, stringifyData);
             
         } catch (error) {
-            throw new Error("Method not implemented.");
+            throw new Error("Something went wrong");
         }
     }
 
@@ -72,7 +72,7 @@ class LocalStorageDB implements ILocalStorage.default {
             });
             return isExist
         } catch (error) {
-            throw new Error("Method not implemented.");
+            throw new Error("Something went wrong");
         }
     }
 }
