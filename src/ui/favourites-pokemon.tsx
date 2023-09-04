@@ -1,6 +1,6 @@
 import Card from "./components/Card"
 
-export default function ListPokemon({
+export default function ListPokemonFavourite({
     results
 }: any) {
 
@@ -10,8 +10,8 @@ export default function ListPokemon({
                 {results.map((pokemon: any, index: number) => (
                     <Card
                         key={index}
-                        id={index + 1}
-                        image={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
+                        id={pokemon.id}
+                        image={pokemon.image}
                         name={pokemon.name}
                     />
                 ))}

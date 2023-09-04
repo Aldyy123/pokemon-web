@@ -33,7 +33,6 @@ export default function ContainerPokemon() {
                         loader={<h4>Loading...</h4>}
                     >
                         <ListPokemon
-                            offsetNumber={offsetNumber}
                             results={pages.results} />
                     </InfiniteScroll>
 
