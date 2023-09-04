@@ -18,7 +18,7 @@ export default function DetailPokemon({
             id: pokemon.id,
             name: pokemon.name,
             pokemon_url: `${urlBase}pokemon/${pokemon.id}`,
-            image: pokemon.sprites.front_default
+            image: pokemon.sprites.other['official-artwork'].front_default
         }
         ), [pokemon])
         const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)
@@ -52,7 +52,7 @@ export default function DetailPokemon({
                     <Image
                         height={800}
                         width={800}
-                        src={pokemon.sprites.front_default}
+                        src={pokemon.sprites.other['official-artwork'].front_default}
                         alt={pokemon.name}
                         className="mx-auto w-8/12"
                     />
@@ -82,6 +82,14 @@ export default function DetailPokemon({
                             <li key={stat.stat.name}>
                                 {stat.stat.name}: {stat.base_stat}
                             </li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <h2 className="text-xl font-semibold mt-10">Type</h2>
+                    <ul className="list-disc list-inside mt-2">
+                        {pokemon.types.map((type: any) => (
+                            <li key={type.type.name}>{type.type.name}</li>
                         ))}
                     </ul>
                 </div>
