@@ -6,6 +6,7 @@ import LocalStorageDB from "@/infra/usecases/localstorage.usecase";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import Loading from "./components/Loading";
+import { toast } from 'react-toastify';
 
 interface DetailPokemonProps {
     pokemon: any
@@ -16,7 +17,7 @@ export default function DetailPokemon({
 }: DetailPokemonProps) {
     const [localStorageInjectDb, setLocalStorageInjectDb] = useState<ILocalStorage.default | null>(null)
     const idSpecies = pokemon.species.url.split('/').slice(-2, -1)[0]
-    const { data, isLoading, isError } = useSpeciesPokemon(idSpecies)
+    const { data, isLoading } = useSpeciesPokemon(idSpecies)
 
 
     const dataPokemon: IPokemonEntity = useMemo(() => (
@@ -29,6 +30,7 @@ export default function DetailPokemon({
         }
     ), [pokemon])
     const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)
+    
 
     useEffect(() => {
         const localStorageDb = new LocalStorageDB('pokemon')
@@ -43,12 +45,19 @@ export default function DetailPokemon({
 
         if (alreadyDataToLocal) {
             localStorageInjectDb.remove(dataPokemon)
+            toast.success('Success remove data to favourite', {
+                autoClose: 1000
+            })
             setAlreadyDataToLocal(false)
+            localStorageInjectDb.get()
             return
         }
-
+        toast.success('Success add data to favourite', {
+            autoClose: 1000
+        })
         localStorageInjectDb.set(dataPokemon)
         setAlreadyDataToLocal(true)
+        localStorageInjectDb.get()
     }
 
 

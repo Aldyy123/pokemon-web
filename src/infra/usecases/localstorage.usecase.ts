@@ -16,11 +16,13 @@ class LocalStorageDB implements ILocalStorage.default {
     }
 
     _stringifyJson(data: IPokemonEntity): string {
+        this.get();
         if (this.data === null) {
             this.data = []
         }
-
-        this.data = [...this.data, data]
+        console.log(this.data);
+        this.data = [...this.data, data]        
+        
         return JSON.stringify(this.data);
     }
 
@@ -28,7 +30,10 @@ class LocalStorageDB implements ILocalStorage.default {
         try {
             const data: string | null = localStorage.getItem(this.key);
             if (!data) return null;
-            return this._parseJson(data);
+            const jsonData = this._parseJson(data);
+            this.data = jsonData;
+
+            return jsonData;
         } catch (error) {
             throw new Error("Something went wrong");
         }
@@ -56,7 +61,7 @@ class LocalStorageDB implements ILocalStorage.default {
             
             const stringifyData = JSON.stringify(data);            
             localStorage.setItem(this.key, stringifyData);
-            
+            this.get();
         } catch (error) {
             throw new Error("Something went wrong");
         }
