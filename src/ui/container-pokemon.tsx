@@ -19,26 +19,19 @@ export default function ContainerPokemon() {
     if (isError) return <Error statusCode={400} />
 
 
-    // useEffect(() => {
-    //     if (selectedType !== 'all') {
-    //         refetch()
-    //     }
-    // }, [selectedType, refetch])
-
-
     return (
         <>
-            <div className="px-10">
-                <h1 className="text-4xl text-gray-950 dark:text-gray-100 font-semibold mt-2 text-center">Pokemon List</h1>
-                <PokemonFilter selectedType={selectedType} onChange={handleTypeChange} />
+            <div className="px-10 mb-44">
+                {/* <h1 className="text-4xl text-gray-950 dark:text-gray-100 font-semibold mt-2 text-center">Pokemon List</h1> */}
+                <div className="fixed w-full left-0 px-10 md:left-auto top-20">
+                    <PokemonFilter selectedType={selectedType} onChange={handleTypeChange} />
+                </div>
             </div>
             {data?.pages?.map((pages, indexPages) => {
                 const offset = data.pageParams[indexPages] || 0
                 const offsetNumber = Number(offset)
                 const lengthData = data.pages.length * 20
-                // if (pages.results.length >= 20) {
-                //     setHasMore(false)
-                // }
+
 
 
                 return (
