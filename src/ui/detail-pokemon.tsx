@@ -1,9 +1,11 @@
 import { urlBase } from "@/config/api.config";
 import { IPokemonEntity } from "@/domain/entities/pokemon.entity";
 import { ILocalStorage } from "@/domain/interfaces";
+import { useSpeciesPokemon } from "@/hooks/usePokemon";
 import LocalStorageDB from "@/infra/usecases/localstorage.usecase";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import Loading from "./components/Loading";
 
 interface DetailPokemonProps {
     pokemon: any
@@ -13,6 +15,10 @@ export default function DetailPokemon({
     pokemon
 }: DetailPokemonProps) {
     const [localStorageInjectDb, setLocalStorageInjectDb] = useState<ILocalStorage.default | null>(null)
+    const idSpecies = pokemon.species.url.split('/').slice(-2, -1)[0]
+    const { data, isLoading, isError } = useSpeciesPokemon(idSpecies)
+
+
     const dataPokemon: IPokemonEntity = useMemo(() => (
         {
             id: pokemon.id,
@@ -21,10 +27,10 @@ export default function DetailPokemon({
             image: pokemon.sprites.other['official-artwork'].front_default,
             types: pokemon.types
         }
-        ), [pokemon])
-        const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)
-        
-        useEffect(() => {
+    ), [pokemon])
+    const [alreadyDataToLocal, setAlreadyDataToLocal] = useState(false)
+
+    useEffect(() => {
         const localStorageDb = new LocalStorageDB('pokemon')
         setLocalStorageInjectDb(localStorageDb)
         const existData = localStorageDb.checkStorageValue(dataPokemon)
@@ -33,9 +39,9 @@ export default function DetailPokemon({
     }, [dataPokemon])
 
     const handleADataToLocal = () => {
-        if(!localStorageInjectDb) return
+        if (!localStorageInjectDb) return
 
-        if(alreadyDataToLocal) {
+        if (alreadyDataToLocal) {
             localStorageInjectDb.remove(dataPokemon)
             setAlreadyDataToLocal(false)
             return
@@ -44,6 +50,9 @@ export default function DetailPokemon({
         localStorageInjectDb.set(dataPokemon)
         setAlreadyDataToLocal(true)
     }
+
+
+
 
 
     return (
@@ -60,6 +69,12 @@ export default function DetailPokemon({
                     <h1 className="text-3xl font-semibold mt-2">{pokemon.name}</h1>
                     <p className="text-gray-500 dark:text-gray-100"># {pokemon.id}</p>
                 </div>
+                {isLoading ? <Loading screen={false} /> : (
+                    <div>
+                        <h2 className="text-xl font-semibold mt-10">Description</h2>
+                        <p className="mt-2">{data?.flavor_text_entries[0].flavor_text}</p>
+                    </div>
+                )}
                 <div>
                     <h2 className="text-xl font-semibold mt-10">Abilities</h2>
                     <ul className="list-disc list-inside mt-2">

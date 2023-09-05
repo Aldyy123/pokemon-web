@@ -35,3 +35,11 @@ export const usePokemonTypesList = () => {
         retry: false,
     });
 }
+
+export const useSpeciesPokemon = (query: string) => {
+    return useQuery(['speciesPokemon', query], () => PokemonClient.getSpeciesPokemon(query), {
+        enabled: query.length > 0,
+        staleTime: Infinity,
+        retry: false,
+    });
+}
